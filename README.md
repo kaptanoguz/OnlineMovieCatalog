@@ -1,17 +1,15 @@
-[README.md](https://github.com/user-attachments/files/25561982/README.md)
 # 🎬 Online Movie Catalog
 
 A beautiful desktop application to browse, discover, and track movies and TV shows.
 
 ![Electron](https://img.shields.io/badge/Electron-33-47848F?style=flat&logo=electron)
 ![TMDB](https://img.shields.io/badge/Powered%20by-TMDB-01d277?style=flat)
-![License](https://img.shields.io/badge/License-ISC-blue)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
 ## ✨ Features
 
 - 🔍 **Search & Discover** — Browse thousands of movies and TV shows from TMDB
 - 🎯 **Smart Filtering** — Filter by genre, year, rating, popularity, and more
-- 🤖 **AI Analysis** — Get AI-powered movie analysis using Grok (xAI)
 - ⭐ **Wishlist** — Save movies and shows to your personal list
 - 🎬 **Trailers** — Watch trailers directly from YouTube
 - 📦 **Collections** — See related movies in a series
@@ -40,14 +38,6 @@ npm install
 npm start
 ```
 
-## ⚙️ Configuration
-
-### AI Analysis (Optional)
-To use the AI movie analysis feature:
-1. Get a free API key from [xAI Console](https://console.x.ai)
-2. Open Settings (⚙️) in the app
-3. Paste your API key in the "Grok (xAI) API Key" field
-
 ## 🛠️ Build
 
 ```bash
@@ -56,14 +46,8 @@ npm run build:linux    # Build .deb package
 
 ## 📸 Screenshots
 
-![Screenshot 1](Screenshot1.png)
-
-![Screenshot 2](Screenshot2.png)
-
 *Launch the app and start discovering your next favorite movie!*
 
 ## 🙏 Credits
 
 - Movie data provided by [The Movie Database (TMDB)](https://www.themoviedb.org/)
-- AI analysis powered by [xAI Grok](https://x.ai/)
-- Built with [Electron](https://www.electronjs.org/)
