@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Catalog</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <img src="logo.png" alt="Logo" class="header-logo" onclick="location.reload()">
+            <div class="search-bar">
+                <input type="text" id="search" placeholder="Search..." data-i18n-placeholder="search_placeholder">
+                <button class="btn" onclick="searchMovies()" data-i18n="search_btn">Search</button>
+            </div>
+            <div class="header-actions">
+                <div class="type-toggle">
+                    <button class="toggle-btn active" id="typeMovie" onclick="switchContentType('movie')"
+                        data-i18n="movies">Movies</button>
+                    <button class="toggle-btn" id="typeTV" onclick="switchContentType('tv')" data-i18n="tv_shows">TV
+                        Shows</button>
+                </div>
+
+                <div class="sort-container">
+                    <select id="headerSortBy" class="sort-select" onchange="discoverMovies(false, true)">
+                        <optgroup label="Sorting" data-i18n-label="sorting">
+                            <option value="popularity.desc" data-i18n="popularity">Popularity</option>
+                            <option value="vote_average.desc" data-i18n="rating">Rating</option>
+                            <option value="primary_release_date.desc" data-i18n="newest">Newest</option>
+                            <option value="revenue.desc" data-i18n="revenue">Revenue</option>
+                        </optgroup>
+                        <optgroup label="Curated Lists" data-i18n-label="curated_lists">
+                            <option value="list:top_rated" data-i18n="top_rated">Top Rated</option>
+                            <option value="list:popular" data-i18n="popular">Popular</option>
+                            <option value="list:now_playing" data-i18n="now_playing">Now Playing / Airing</option>
+                            <option value="list:upcoming" data-i18n="upcoming">Upcoming</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <button class="btn secondary" onclick="discoverMovies(true, true)" title="Random Recommendations"
+                    data-i18n-title="random_title">🎲 <span data-i18n="random">Random</span></button>
+                <button class="btn secondary wishlist-trigger" onclick="showWishlistView()"><span data-i18n="wishlist">⭐
+                        List</span></button>
+
+                <button class="settings-gear" onclick="openSettings()" title="Settings"
+                    data-i18n-title="settings_title">⚙️</button>
+            </div>
+        </header>
+
+        <div class="filters" id="filters">
+            <!-- Genres will be rendered here -->
+        </div>
+
+        <div class="movie-grid" id="movieGrid">
+            <!-- Movie cards will be rendered here -->
+        </div>
+
+        <div id="scrollSentinel" style="height: 10px; margin-top: 20px;"></div>
+
+        <!-- Movie Details Modal -->
+        <div class="modal" id="movieModal">
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeModal('movieModal')">&times;</button>
+                <div class="modal-body">
+                    <div class="modal-poster"></div>
+                    <div class="modal-details">
+                        <h2 class="modal-title"></h2>
+                        <div class="modal-overview"></div>
+
+                        <!-- NEW PRO FEATURES -->
+                        <div id="trailerSection" class="pro-section" style="display: none; margin-bottom: 2rem;">
+                            <h3 data-i18n="trailer_title" style="margin-bottom: 1rem; color: #60a5fa;">🍿 Trailer</h3>
+                            <div class="trailer-wrapper">
+                                <div id="trailerPlayer"></div>
+                            </div>
+                        </div>
+
+                        <div class="ai-analysis">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                                <h3 style="margin-bottom: 0;" data-i18n="ai_analysis">🤖 AI Analysis</h3>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn secondary" id="generateAnalysisBtn"
+                                        onclick="generateAIAnalysis()" data-i18n="generate_analysis">Generate
+                                        Analysis</button>
+                                    <button class="btn secondary" id="wishlistBtn" data-i18n="add_to_list">➕ Add to
+                                        List</button>
+                                </div>
+                            </div>
+                            <div class="ai-content"></div>
+                        </div>
+
+                        <div id="collectionSection" class="pro-section" style="display: none; margin-bottom: 2rem;">
+                            <h3 id="collectionTitle" style="margin-bottom: 1rem; color: #60a5fa;">📦 Series</h3>
+                            <div class="horizontal-scroll" id="collectionGrid"></div>
+                        </div>
+
+                        <div id="recommendationsSection" class="pro-section"
+                            style="display: none; margin-bottom: 2rem;">
+                            <h3 data-i18n="recommended_title" style="margin-bottom: 1rem; color: #60a5fa;">🔥 More Like
+                                This</h3>
+                            <div class="horizontal-scroll" id="recommendationsGrid"></div>
+                        </div>
+
+                        <div id="reviewsSection" class="pro-section" style="display: none; margin-bottom: 2rem;">
+                            <h3 data-i18n="reviews_title" style="margin-bottom: 1rem; color: #60a5fa;">💬 Top Reviews
+                            </h3>
+                            <div id="reviewsGrid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settingsModal" class="modal">
+            <div class="modal-content" style="max-width: 600px;">
+                <button class="close-modal" onclick="closeModal('settingsModal')">&times;</button>
+                <h2 style="margin-bottom: 2rem; font-size: 2rem; font-weight: 800;" data-i18n="settings_title_text">⚙️
+                    Settings</h2>
+
+                <div class="settings-section">
+                    <h3 data-i18n="content_filters">🎬 Content Filters</h3>
+                    <div class="setting-row">
+                        <label for="includeAdult" data-i18n="show_adult">Show Adult Content (+18)</label>
+                        <input type="checkbox" id="includeAdult">
+                    </div>
+                    <div class="setting-row">
+                        <label for="onlyAdult" data-i18n="only_adult">Only Show Adult Content</label>
+                        <input type="checkbox" id="onlyAdult">
+                    </div>
+                    <div class="setting-row">
+                        <label for="minVoteCount" data-i18n="min_vote_count">Minimum Vote Count</label>
+                        <input type="number" id="minVoteCount" min="0" step="50">
+                    </div>
+                    <div class="setting-row">
+                        <label for="minRating" data-i18n="min_rating">Minimum Rating (0-10)</label>
+                        <input type="number" id="minRating" min="0" max="10" step="0.5">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 data-i18n="release_info">📅 Release Info</h3>
+                    <div class="setting-row">
+                        <label for="yearFrom" data-i18n="year_from">Year From</label>
+                        <input type="number" id="yearFrom" min="1900" max="2026">
+                    </div>
+                    <div class="setting-row">
+                        <label for="yearTo" data-i18n="year_to">Year To</label>
+                        <input type="number" id="yearTo" min="1900" max="2026">
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 data-i18n="region_language">🌍 Region and Language</h3>
+                    <div class="setting-row">
+                        <label for="language" data-i18n="language_label">Language</label>
+                        <select id="language">
+                            <option value="tr-TR" data-i18n="lang_tr">Turkish</option>
+                            <option value="en-US" data-i18n="lang_en">English</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <label for="region" data-i18n="region_label">Region</label>
+                        <select id="region">
+                            <option value="TR" data-i18n="region_tr">Turkey</option>
+                            <option value="US" data-i18n="region_us">USA</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3 data-i18n="api_settings">🔑 API Settings</h3>
+                    <div class="setting-row" style="flex-direction: column; align-items: flex-start; gap: 10px;">
+                        <label for="xaiApiKey" data-i18n="api_key_label">Grok (xAI) API Key</label>
+                        <input type="password" id="xaiApiKey" placeholder="xai-..."
+                            data-i18n-placeholder="api_key_placeholder"
+                            style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); color: white;">
+                    </div>
+                </div>
+
+                <div class="setting-row">
+                    <label for="useSettingsFilters" data-i18n="always_use_filters">Always use these filters in
+                        searches</label>
+                    <input type="checkbox" id="useSettingsFilters">
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn secondary" onclick="closeModal('settingsModal')"
+                        data-i18n="cancel">Cancel</button>
+                    <button class="btn" onclick="saveSettings()" data-i18n="save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js?v=1.17"></script>
+</body>
+
+</html>

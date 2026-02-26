@@ -1,0 +1,45 @@
+{
+  "name": "online-movie-catalog",
+  "version": "1.2.6",
+  "description": "Standalone Online Movie Catalog App",
+  "main": "main.js",
+  "productName": "Online Movie Catalog",
+  "homepage": "https://example.com/onlinemoviecatalog",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:linux": "electron-builder --linux deb"
+  },
+  "author": {
+    "name": "Antigravity",
+    "email": "antigravity@example.com"
+  },
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.oguz.onlinemoviecatalog",
+    "productName": "Online Movie Catalog",
+    "directories": {
+      "output": "dist"
+    },
+    "linux": {
+      "target": [
+        "deb"
+      ],
+      "maintainer": "Antigravity <antigravity@example.com>",
+      "category": "Video;AudioVideo;"
+    },
+    "deb": {
+      "priority": "optional"
+    },
+    "files": [
+      "main.js",
+      "src/**/*",
+      "node_modules/**/*"
+    ]
+  }
+}
