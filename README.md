@@ -56,6 +56,10 @@ npm run build:linux    # Build .deb package
 
 ## 📸 Screenshots
 
+![Screenshot 1](Screenshot1.png)
+
+![Screenshot 2](Screenshot2.png)
+
 *Launch the app and start discovering your next favorite movie!*
 
 ## 🙏 Credits
