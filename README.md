@@ -4,7 +4,7 @@ A beautiful desktop application to browse, discover, and track movies and TV sho
 
 ![Electron](https://img.shields.io/badge/Electron-33-47848F?style=flat&logo=electron)
 ![TMDB](https://img.shields.io/badge/Powered%20by-TMDB-01d277?style=flat)
-![License](https://img.shields.io/badge/License-MIT-blue)
+![License](https://img.shields.io/badge/License-GPLv3-blue)
 
 ## ✨ Features
 

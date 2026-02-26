@@ -14,7 +14,7 @@
     "name": "kaptanoguz",
     "email": "kaptanoguz@gmail.com"
   },
-  "license": "MIT",
+  "license": "GPL-3.0",
   "dependencies": {},
   "devDependencies": {
     "electron": "^33.2.1",
